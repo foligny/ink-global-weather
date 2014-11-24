@@ -1,5 +1,9 @@
-"use strict";
+////////////////////////////////////////////////
+//          Controller & ViewManager          //
+// This is a functional test of the whole app //
+////////////////////////////////////////////////
 
+"use strict";
 define(['controller'], function(Controller) {
 
 	var Toolbox = require('ui-toolbox');

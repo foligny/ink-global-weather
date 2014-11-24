@@ -99,7 +99,7 @@ define(function (require) {
 				}
 				this.currentSort = sort;
 			}
-					
+			
 			for (var i=0; i<this.cities.length; i++)
 			{
 				html += this.renderOneCityInList(this.cities[i]);
@@ -148,8 +148,6 @@ define(function (require) {
 				{
 					Toolbox.addClass(others, "hidden");
 					Toolbox.addClass(el, "marginAlignCenter");
-					//var cityListContainer = Toolbox.getElement(".listContainer", this.cityListInsertionPoint);
-					//Toolbox.addClass(cityListContainer, "centered");
 					var cityId = Toolbox.getAttribute(el, "cityId");
 					self.elements.cityDiv.func(self.controller, cityId);
 				},500);
@@ -223,14 +221,11 @@ define(function (require) {
 			Toolbox.removeClass(cities, "marginAlignCenter");
 		},
 		
-		/// getInitParamsFromView() ///
-		// Read input values from DOM //
 		setCities: function(cities)
 		{	
 			this.cities = cities;
 		},
 		
-		// view manager
 		Initialize: function()
 		{
 			this.bindAll();

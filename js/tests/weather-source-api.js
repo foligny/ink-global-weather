@@ -12,7 +12,7 @@ define(['weather-source-api'], function(WeatherSourceApi) {
 		
 		asyncTest('Fetching data for multiple cities', function() 
 		{
-			expect(4);
+			expect(5);
 			
 			var cities = [{name:"Montreal", id:6077243},{name:"Manchester", id:2643123}];
 			
@@ -20,6 +20,7 @@ define(['weather-source-api'], function(WeatherSourceApi) {
 			{
 				equal(status, true, 'The status should be true for success.');
 				ok(cities[0].coord != null, "The callback should return coord");
+				equal(cities[0].coord.lat, "45.51", "The callback should return coord for Montreal");
 				ok(cities[0].weather != null, "The callback should return non-null weather");
 				ok(cities[0].weather.length >= 1, "The callback should return a populated array of weather");
 				QUnit.start();

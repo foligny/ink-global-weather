@@ -1,10 +1,9 @@
 /////////////////////////
-///  Main controller  ///
+///  Main entry  ///
 /////////////////////////
 //
 // Description:
-//    If someone would be providing a new UI design,
-//    changes would need to be made here only.
+//    Entry point of webapp
 //
 //////////////////////////////////////////////////////
 define(function (require) {
@@ -28,7 +27,7 @@ define(function (require) {
 		{
 			var t = new Date().getTime();
 			diff = t - debugLastTimestamp;
-			console.log("Controller: document.ready at t="+t + " diff("+diff+")");
+			console.log("Main: document.ready at t="+t + " diff("+diff+")");
 			debugLastTimestamp = t;
 		}
 		
@@ -66,7 +65,7 @@ define(function (require) {
 	{
 		var t = new Date().getTime();
 		debugLastTimestamp = t;
-		console.log("Controller: started at t="+t);
+		console.log("Main: started at t="+t);
 	}
 	
 	return { amd:true }; // returning for QUnit testing purposes	

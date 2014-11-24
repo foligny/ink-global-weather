@@ -3,8 +3,7 @@
 /////////////////////////
 //
 // Description:
-//    If someone would be providing a new UI design,
-//    changes would need to be made here only.
+//    Glues together the models (cities), the DOM and view manager
 //
 //////////////////////////////////////////////////////
 define(function (require) {
@@ -15,10 +14,7 @@ define(function (require) {
 	var Toolbox = require('ui-toolbox');
 	var WeatherSource = require('weather-source-api');
 	
-	// private variables/objects
-	var debug = true;
-	var debugLastTimestamp = 0;
-	
+	// constructor	
 	function Controller()
 	{	
 		this.theView = null;

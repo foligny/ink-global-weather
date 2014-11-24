@@ -30,7 +30,6 @@ define(function (require) {
 		return this; // so it can be chained
 	};
 	
-	// override Model.prototype.Load
 	City.prototype.afterLoad = function()
 	{	
  		for (var key in this.main)

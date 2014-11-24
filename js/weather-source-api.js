@@ -1,19 +1,14 @@
-/////////////////////////////////////////
-///   The Weather Source API object   ///
-/// Using http://www.openweathermap.org
-/////////////////////////////////////////
+////////////////////////////////////////////
+///   The Weather Source API object      ///
+/// Using http://www.openweathermap.org  ///
+////////////////////////////////////////////
 "use strict";
-var g_tester = 0;
 define(function (require) {
 
 	var Toolbox = require("ui-toolbox");
 	
 	var WeatherSource = function() 
 	{
-		g_tester++;
-		if (g_tester > 1)
-		{	console.log("not singleton");
-		}
 		return {
 			// Cities can be one city or an array of cities
 			Fetch: function(cities, f_callback)
@@ -73,25 +68,6 @@ define(function (require) {
 					f_callback(true);
 					
 			 	});
-			 	
-				/* This would be the way with jQuery but for this test I decided to write the jsonp function myself to make this more challenging
-				var url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk";
-				$.ajax({
-					type: 'GET',
-					url: url,
-					async: false,
-					contentType: "application/json",
-					dataType: 'jsonp',
-					success: function(json) 
-					{
-						if (console) console.dir(json);
-					},
-					error: function(e)
-					{
-						if (console) console.log(e.message);
-					}
-				});
-				*/
 			}
 		};
 	}

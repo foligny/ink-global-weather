@@ -1,6 +1,6 @@
 ////////////////////////////////
-///    Base Player object    ///
-/// Player.prototype => null ///
+///       Model object       ///
+///  Model.prototype => null ///
 ////////////////////////////////
 "use strict";
 define(function (require) {

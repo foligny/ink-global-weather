@@ -5,10 +5,14 @@
 //  Description : Reusable DOM manipulation functions.
 //   Written by : Francois Oligny-Lemieux
 // Date Created : 02.Nov.2014
+//     Modified : 22.Nov.2014 (added jsonp request, added [data-template])
 // 
 // Browser support : 
-//  DOM manipulations: IE6+, Firefox 1.5+, Chrome, Safari, 
+//  DOM manipulations: IE8+, Firefox 1.5+, Chrome, Safari
 //  HTML5: IE9+, Firefox 22+, Chrome 15.
+//
+// TODO: Write fallback to querySelector for IE6 & IE7
+//
 //////////////////////////////////////////////////////
 "use strict";
 define(function (require) {
@@ -403,10 +407,7 @@ define(function (require) {
 			}
 			else if (typeof model[item] == "object")
 			{
-				//for (var level2 in model[item])
-				//{
-					Toolbox.ReplaceInPlace(rootEl, model[item], base+item+".");
-				//}
+				Toolbox.ReplaceInPlace(rootEl, model[item], base+item+".");
 			}
 			else
 			{
@@ -515,97 +516,6 @@ define(function (require) {
 		head.insertBefore(script, head.firstChild);
 	};
 	
-	/*
-	 AJAX method
-	 
-	 var request = {
-		method: "get",
-		jsonp: true/false,
-		url: "",
-		success: function() {}
-		error: function() {}	
-	 };
-	 Toolbox.ajax(request);
-	*/
-	Toolbox.ajax = function(request)
-	{
-		// validations
-		
-		// create xmlhttp object
-		var xmlhttp = false;
-		if (typeof XMLHttpRequest != 'undefined')
-		{
-			try
-			{	xmlhttp = new XMLHttpRequest();
-			}
-			catch (e)
-			{	xmlhttp = false;
-			}
-		}
-
-		if (xmlhttp === false && window.createRequest) 
-		{
-			try
-			{	xmlhttp = window.createRequest();
-			} 
-			catch (e)
-			{	xmlhttp=false;
-			}
-		}
-		 
-		if (xmlhttp === false)
-		{
-			/*@cc_on @*/
-			/*@if (@_jscript_version >= 5)
-			try
-			{	xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			catch (e)
-			{	try
-				{	xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-				}
-				catch (E)
-				{	xmlhttp = false;
-				}
-			}
-			@end @*/
-		}
-		
-		if (xmlhttp === false) return false;
-		
-		var t = new Date().getTime();
-		requestString += "&_t="+t;
-		if ( spanDebug ) spanDebug.innerHTML = g_time_request + " HTTP request ready to be sent<br>\n";
-		if ( spanDebug ) spanDebug.innerHTML += requestString +"<br>\n";
-		
-		if ( request.jsonp === true )
-		{
-		}
-		
-		var async = true;		
-		xmlhttp.open("GET", requestString, async/*, username, password*/);
-		
-		xmlhttp.onreadystatechange = function()
-		{
-			//alert("readyState=="+xmlhttp.readyState);
-			//if ( spanDebug ) spanDebug.innerHTML += "xmlhttp.readyState=="+xmlhttp.readyState+"<br>\n";
-			if (xmlhttp.readyState==4)
-			{
-				//alert("readyState==4");
-				//alert(xmlhttp.responseText);
-			}
-		};
-		
-		try
-		{
-			xmlhttp.send(null);
-		}
-		catch (e)
-		{
-			if (console) console.log("[xmlhttp] Error send(): " + e);
-		}		
-	};
-
 	return Toolbox;
 });
 
