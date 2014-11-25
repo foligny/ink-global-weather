@@ -130,7 +130,13 @@ define(function (require) {
 	{
 		// IE8 does not support querySelectorAll with spaces, i.e. hierarchical selections
 		if (parent != null)
-		{	return parent.querySelectorAll(selector);
+		{
+			if (typeof parent.querySelectorAll == "undefined")
+			{
+				if (console) console.log("parent.querSelectorAll is invalid for selector:" + selector);
+				if (console) console.trace();
+			}
+			return parent.querySelectorAll(selector);
 		}
 		return document.querySelectorAll(selector);
 	};
@@ -349,48 +355,41 @@ define(function (require) {
 		return html;
 	};
 
-	// TODO: to make this more reusable, change to a recursive function 
-	Toolbox.ReplacePlain = function(html, model)
+	// Replace model in HTML string
+	// Targets on %%variable-name%%
+	// Suports array %%cities[0].temperature%%
+	Toolbox.ReplacePlain = function(html, model, base)
 	{
 		var regex;
+		if (base == null) base = "";
 		
 		for (var item in model)
 		{
-			if (typeof model[item] == "object")
+			if (typeof model[item] == "function")
+			{	// skip functions
+			}
+			else if (Object.prototype.toString.call( model[item] ) === '[object Array]')
 			{
-				for (var level2 in model[item])
+				for (var iterator in model[item])
 				{
-					if (Object.prototype.toString.call( model[item] ) === '[object Array]')
-					{
-						if (typeof model[item][level2] == "object")
-						{
-							for (var level3 in model[item][level2])
-							{
-								regex = new RegExp("%%"+item+"\\["+level2+"\\]\\."+level3+"%%", "g"); // the "g" is important to replace all
-								html = html.replace(regex, model[item][level2][level3]);
-							}
-						}
-						else
-						{
-							regex = new RegExp("%%"+item+"\\["+level2+"\\]%%", "g"); // the "g" is important to replace all
-							html = html.replace(regex, model[item][level2]);
-						}
-					}
-					else
-					{	regex = new RegExp("%%"+item+"\\."+level2+"%%", "g"); // the "g" is important to replace all
-						html = html.replace(regex, model[item][level2]);
-					}
+					html = Toolbox.ReplacePlain(html, model[item][iterator], base+item+"\\["+iterator+"\\]\\.");
 				}
+			}
+			else if (typeof model[item] == "object")
+			{
+				html = Toolbox.ReplacePlain(html, model[item], base+item+"\\.");
 			}
 			else
 			{
-				regex = new RegExp("%%"+item+"%%", "g"); // the "g" is important to replace all
+				regex = new RegExp("%%"+base+item+"%%", "g"); // the "g" is important to replace all
 				html = html.replace(regex, model[item]);
 			}
 		}
 		return html;
 	};
 	
+	// Replaces using innerHTML on existing DOM elements
+	// Targets on attributes data-target="model-variable-name" and data-template="templateName"
 	Toolbox.ReplaceInPlace = function(rootEl, model, base)
 	{
 		var regex;
@@ -398,16 +397,19 @@ define(function (require) {
 		
 		for (var item in model)
 		{
-			if (Object.prototype.toString.call( model[item] ) === '[object Array]')
+			if (typeof model[item] == "function")
+			{	// skip functions
+			}
+			else if (Object.prototype.toString.call( model[item] ) === '[object Array]')
 			{
 				for (var iterator in model[item])
 				{
-					Toolbox.ReplaceInPlace(rootEl, model[item][iterator], base+item+"["+iterator+"].");
+					Toolbox.ReplaceInPlace(rootEl, model[item][iterator], base+item+"\\["+iterator+"\\]\\.");
 				}
 			}
 			else if (typeof model[item] == "object")
 			{
-				Toolbox.ReplaceInPlace(rootEl, model[item], base+item+".");
+				Toolbox.ReplaceInPlace(rootEl, model[item], base+item+"\\.");
 			}
 			else
 			{
